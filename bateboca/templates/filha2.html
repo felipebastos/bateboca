@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block titulo %}Filha dois{% endblock titulo %}
+{% block cabecalho %}Um outro template{% endblock cabecalho %}
+{% block conteudo %}
+    {{ super() }}
+    <b>estou noutra página, usando o mesmo template base.</b>
+{% endblock conteudo %}

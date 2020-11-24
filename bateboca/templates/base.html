@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block titulo %}{% endblock titulo %}</title>
+    </head>
+    <body>
+        {% block conteudo %}
+            <h1>{% block cabecalho %}{% endblock cabecalho %}</h1>
+        {% endblock conteudo %}
+    </body>
+</html>
