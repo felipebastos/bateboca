@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro de usuário{% endblock %}
+{% block cabecalho %}Cadastro de Usuário{% endblock %}
+{% block conteudo %}
+    {{ super() }}
+    <form action="/cadastro" method="POST">
+        Nome: <input type="text" name="nome"><br>
+        Senha: <input type="password" name="senha"><br>
+        
+        <input type="submit" value="cadastrar">
+    </form>
+{% endblock %}
