@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block titulo %}Mural{% endblock %}
+{% block cabecalho %}Mural do Bate-Boca{% endblock %}
+{% block descricao %}Discuta ideias com qualquer pessoa.{% endblock %}
+
+{% block mur %}active{% endblock %}
+
+{% block conteudo %}
+{{ super() }}
+<div class="container">
+    <div class="row">
+        <form action="/baterboca" method="post">
+            <input type="text" placeholder="desabafe" name="comentario">
+            <input type="submit" value="comentar">
+        </form>
+    </div>
+    {% for k in d: %}
+        <div class="row">
+            <div class="col">
+                <b>{{ d[k]['nome'] }}</b> disse: {{ d[k]['fala'] }}
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+</div>
+{% endblock %}

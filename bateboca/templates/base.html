@@ -2,11 +2,42 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>{% block titulo %}{% endblock titulo %}</title>
+        <title>{% block titulo %}{% endblock titulo %} - Bate-Boca</title>
+        <link rel="stylesheet" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/css/bateboca.css">
+        <script src="static/js/bootstrap.bundle.min.css"></script>
+        
     </head>
     <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link {% block ini %}{% endblock %}" href="/">Início</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block log %}{% endblock %}" href="/login">Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block cad %}{% endblock %}" href="/cadastro">Cadastro</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block mur %}{% endblock %}" href="/mural">Mural</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Olá, {{session.user_name}}</a> | <a href="/logout">sair</a>
+    </li>
+  </ul>
+
+</nav>
         {% block conteudo %}
+        <div class="container">
+        <div class="jumbotron">
             <h1>{% block cabecalho %}{% endblock cabecalho %}</h1>
+            <p>{% block descricao %}{% endblock %}
+        </div>
+        </div>
         {% endblock conteudo %}
     </body>
 </html>

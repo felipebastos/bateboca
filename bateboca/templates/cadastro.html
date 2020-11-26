@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro{% endblock %}
+{% block cabecalho %}Cadastro do Bate-Boca{% endblock %}
+{% block descricao %}Para utilizar o Bateboca você precisa se cadastrar{% endblock %}
+
+{% block cad %}active{% endblock %}
+
+{% block conteudo %}
+{% if session.mensagem: %}
+        <span class="alert alert-warning">{{session.mensagem}}</span>
+    {% endif %}
+{{ super() }}
+<div class="container">
+    <form action="/cadastrar" method="post">
+        <input class="form-control" type="text" name="n_user" placeholder="nome de usuário"><br>
+        <input class="form-control" type="password" name="pass_user" placeholder="senha"><br>
+        <input class="form-control" type="password" name="pass_user_conf" placeholder="confirme a senha"><br>
+        <input class="btn btn-primary" type="submit" value="Cadastrar">
+    </form>
+</div>
+{% endblock %}

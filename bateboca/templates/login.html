@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block titulo %}Login{% endblock %}
+{% block cabecalho %}Login do Bate-Boca{% endblock %}
+{% block descricao %}Para utilizar o Bateboca você entrar no sistema primeiro{% endblock %}
+
+{% block log %}active{% endblock %}
+
+{% block conteudo %}
+{{ super() }}
+<div class="container">
+    {% if session.mensagem: %}
+        <span class="alert alert-warning">{{session.mensagem}}</span>
+    {% endif %}
+    <form action="/logar" method="post">
+        <input class="form-control" type="text" name="n_user" placeholder="nome de usuário"><br>
+        <input class="form-control" type="password" name="pass_user" placeholder="senha"><br>
+        <input class="btn btn-primary" type="submit" value="Entrar">
+    </form>
+</div>
+{% endblock %}
