@@ -2,6 +2,9 @@ from flask import current_app as app, render_template, request, redirect, sessio
 
 from datetime import datetime
 
+from bateboca import db
+from bateboca.entidades import Usuario
+
 usuarios = {'felipebastos': '123456'}
 discussao = {}
 
@@ -32,8 +35,10 @@ def logar():
     nome_da_pessoa = request.form['n_user']
     senha = request.form['pass_user']
     
-    if nome_da_pessoa in usuarios:
-        if senha == usuarios[nome_da_pessoa]:
+    alguem = Usuario.query.filter_by(nome=nome_da_pessoa).first()
+    
+    if alguem is not None:
+        if senha == alguem.senha:
             session['user_name'] = nome_da_pessoa
             if 'mensagem' in session:
                 del session['mensagem']
@@ -48,11 +53,13 @@ def logar():
     
 @app.route('/cadastrar', methods=['POST'])
 def cadastrar():
-    nome = request.form['n_user']
+    nome_c = request.form['n_user']
     senha = request.form['pass_user']
     s_conf = request.form['pass_user_conf']
     
-    if nome in usuarios:
+    alguem = Usuario.query.filter_by(nome=nome_c).first()
+    
+    if alguem is not None:
         session['mensagem'] = 'Usuário já cadastrado.'
         return redirect('/cadastro')
     else:
@@ -60,7 +67,14 @@ def cadastrar():
             session['mensagem'] = 'Senhas não conferem.'
             return redirect('/cadastro')
         else:
-            usuarios[nome] = senha
+            # usuarios[nome] = senha
+            novo = Usuario()
+            novo.nome = nome_c
+            novo.senha = senha
+            
+            db.session.add(novo)
+            db.session.commit()
+            
     if 'mensagem' in session:
         del session['mensagem']
     return redirect('/login')
@@ -73,3 +87,21 @@ def baterboca():
     
     return redirect('/mural')
     
+    
+@app.route('/remove/<int:id>')
+def remove(id):
+    quem = Usuario.query.get(id)
+    db.session.delete(quem)
+    db.session.commit()
+    return 'Removi o usuário {}'.format(quem.nome)
+    
+@app.route('/atualiza/<int:id>/<nomeNovo>')
+def atualiza(id, nomeNovo):
+    quem = Usuario.query.get(id)
+    quem.nome = nomeNovo
+    db.session.add(quem)
+    db.session.commit()
+    
+    return redirect('/')
+    
+
