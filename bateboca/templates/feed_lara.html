@@ -26,6 +26,7 @@
             
             lat.value = position.coords.latitude;
             lon.value = position.coords.longitude;
+            console.log(`La: ${lat.value}, Lo: ${lon.value}`)
         }
         window.onload = function(){
             getLocation();

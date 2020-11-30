@@ -108,7 +108,7 @@ def atualiza(id, nomeNovo):
     
     
 # Exemplo para a Lara
-lojas = {'chico': {'lat': -3.7555660932252835, 'lon': -38.51612129308314, 'area': 10000, 'ocupacao': 0}}
+lojas = {'chico': {'lat': -3.7556750000000002, 'lon': -38.5150646, 'area': 10.0, 'ocupacao': 0}}
 
 @app.route('/usuario')
 def usuario():
@@ -130,18 +130,18 @@ def checkin():
     l_lon = l_cad['lon']*math.pi/180
     l_a = l_cad['area']
 
-    raio = math.sqrt(math.pi/l_a)
+    raio = math.sqrt(l_a/math.pi)
     
     # dist**2 = c1**2 + c2**2
-    deltaLng = l_lon - lon;
+    deltaLng = l_lon - lon
 
-    s = math.cos(math.pi/2 - l_lat)*math.cos(math.pi/2 - lat) + math.sin(math.pi/2 - l_lat)*math.sin(math.pi/2 - lat)*math.cos(deltaLng);
-    arco = math.acos(s);
+    s = math.cos(math.pi/2 - l_lat)*math.cos(math.pi/2 - lat) + math.sin(math.pi/2 - l_lat)*math.sin(math.pi/2 - lat)*math.cos(deltaLng)
+    arco = math.acos(s)
 
 
 
 		# A distância é o arco em radiano vezes o raio da terra (aproximado).
-    distancia = arco*6378*1000;
+    distancia = arco*6378*1000
     
     
     #dist = math.sqrt((l_lat - lat)**2 + (l_lon - lon)**2)
@@ -151,7 +151,7 @@ def checkin():
         return "Dentro"
     else:
         # o cliente não está na loja
-        return "Fora"
+        return "Fora. Distância: {} metros. Raio: {} metros".format(distancia, raio)
     
     return 'Você está na loja {}'.format(loja)
 
