@@ -5,10 +5,10 @@ import math
 from datetime import datetime
 
 from bateboca import db
-from bateboca.entidades import Usuario
+from bateboca.entidades import Usuario, Postagem
 
-usuarios = {'felipebastos': '123456'}
-discussao = {}
+#usuarios = {'felipebastos': '123456'}
+#discussao = {}
 
 @app.route('/')
 def inicio():
@@ -24,6 +24,11 @@ def cadastro():
     
 @app.route('/mural')
 def mural():
+    discussao = {}
+    postagens = Postagem.query.all()
+    for post in postagens:
+        quem = Usuario.query.get(post.usuario_id)
+        discussao[post.dia] = {'nome': quem.nome, 'fala': post.texto}
     return render_template('feed.html', d=discussao)
 
 @app.route('/logout')
@@ -85,7 +90,15 @@ def cadastrar():
 def baterboca():
     comentario = request.form['comentario']
     
-    discussao[datetime.now()] = {'nome':session['user_name'], 'fala':comentario}
+    #discussao[datetime.now()] = {'nome':session['user_name'], 'fala':comentario}
+    quem = Usuario.query.filter_by(nome=session['user_name']).first()
+    
+    post = Postagem()
+    post.texto = comentario
+    post.usuario_id = quem.id
+    
+    db.session.add(post)
+    db.session.commit()
     
     return redirect('/mural')
     

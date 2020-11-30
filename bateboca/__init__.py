@@ -8,10 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 # banco+driver://usuario:senha@servidor:porta_tcp/banco_criado_no_servidor
 
-# http://200.200.200.200:80/cadastro
-
-# mysql://admin:admin@192.0.0.3:1340/biblioteca
-
 # sqlite:///bateboca.db
 
 db = SQLAlchemy()
