@@ -1,5 +1,7 @@
 from flask import current_app as app, render_template, request, redirect, session
 
+import math
+
 from datetime import datetime
 
 from bateboca import db
@@ -104,4 +106,52 @@ def atualiza(id, nomeNovo):
     
     return redirect('/')
     
+    
+# Exemplo para a Lara
+lojas = {'chico': {'lat': -3.7555660932252835, 'lon': -38.51612129308314, 'area': 10000, 'ocupacao': 0}}
+
+@app.route('/usuario')
+def usuario():
+    return render_template('feed_lara.html')
+
+@app.route('/checkin', methods=['POST'])
+def checkin():
+    lat = float(request.form['lat'])*math.pi/180
+    lon = float(request.form['lon'])*math.pi/180
+    loja = request.form['loja']
+    
+    print(loja)
+    print(lat)
+    print(lon)
+    
+    l_cad = lojas[loja]
+    
+    l_lat = l_cad['lat']*math.pi/180
+    l_lon = l_cad['lon']*math.pi/180
+    l_a = l_cad['area']
+
+    raio = math.sqrt(math.pi/l_a)
+    
+    # dist**2 = c1**2 + c2**2
+    deltaLng = l_lon - lon;
+
+    s = math.cos(math.pi/2 - l_lat)*math.cos(math.pi/2 - lat) + math.sin(math.pi/2 - l_lat)*math.sin(math.pi/2 - lat)*math.cos(deltaLng);
+    arco = math.acos(s);
+
+
+
+		# A distância é o arco em radiano vezes o raio da terra (aproximado).
+    distancia = arco*6378*1000;
+    
+    
+    #dist = math.sqrt((l_lat - lat)**2 + (l_lon - lon)**2)
+    
+    if distancia <= raio:
+        l_cad['ocupacao'] += 1
+        return "Dentro"
+    else:
+        # o cliente não está na loja
+        return "Fora"
+    
+    return 'Você está na loja {}'.format(loja)
 

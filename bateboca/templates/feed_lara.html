@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<body>
+    Loja do seu Chico: <form action="/checkin" method="POST">
+        <input type="hidden" name="loja" id="loja1" value="chico">
+        <input type="hidden" value="" name="lat" id="lat">
+        <input type="hidden" value="" name="lon" id="lon">
+        <input type="submit" value="Check in">
+    </form>
+    Loja da dona Maria:
+    
+    
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(preencher);
+            } else {
+                //x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        
+        function preencher(position){
+            let lat = document.getElementById('lat');
+            let lon = document.getElementById('lon');
+            
+            
+            lat.value = position.coords.latitude;
+            lon.value = position.coords.longitude;
+        }
+        window.onload = function(){
+            getLocation();
+        }
+    </script>
+    
+</body>
+</html>
