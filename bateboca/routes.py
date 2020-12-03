@@ -4,7 +4,7 @@ import math
 
 from datetime import datetime
 
-from bateboca import db
+from bateboca import db, bcrypt
 from bateboca.entidades import Usuario, Postagem
 
 #usuarios = {'felipebastos': '123456'}
@@ -45,7 +45,7 @@ def logar():
     alguem = Usuario.query.filter_by(nome=nome_da_pessoa).first()
     
     if alguem is not None:
-        if senha == alguem.senha:
+        if bcrypt.check_password_hash(alguem.senha, senha):
             session['user_name'] = nome_da_pessoa
             if 'mensagem' in session:
                 del session['mensagem']
@@ -77,7 +77,10 @@ def cadastrar():
             # usuarios[nome] = senha
             novo = Usuario()
             novo.nome = nome_c
-            novo.senha = senha
+            
+            senha_hash = bcrypt.generate_password_hash(senha).decode('utf-8')
+            
+            novo.senha = senha_hash
             
             db.session.add(novo)
             db.session.commit()

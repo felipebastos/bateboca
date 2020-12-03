@@ -6,11 +6,15 @@ from flask.cli import with_appcontext
 
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_bcrypt import Bcrypt
+
 # banco+driver://usuario:senha@servidor:porta_tcp/banco_criado_no_servidor
 
 # sqlite:///bateboca.db
 
 db = SQLAlchemy()
+
+bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -25,6 +29,7 @@ def create_app():
         pass
     
     db.init_app(app)
+    bcrypt.init_app(app)
     
     app.cli.add_command(init_db_command)
     
