@@ -1,10 +1,13 @@
 from bateboca import db
 from datetime import datetime
 
-class Usuario(db.Model):
+from flask_login import UserMixin
+
+class Usuario(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), unique=True, nullable=False)
     senha = db.Column(db.String(1000), nullable=False)
+    profile_img = db.Column(db.String(100), default="")
     
     postagens = db.relationship('Postagem', backref='usuario', lazy=True)
     

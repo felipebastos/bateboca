@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>{% block titulo %}{% endblock titulo %} - Bate-Boca</title>
-        <link rel="stylesheet" href="static/css/bootstrap.min.css">
-        <link rel="stylesheet" href="static/css/bateboca.css">
-        <script src="static/js/bootstrap.bundle.min.js"></script>
-        
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bateboca.css')}}">
+        <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
     </head>
     <body>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -16,18 +16,27 @@
     <li class="nav-item">
       <a class="nav-link {% block ini %}{% endblock %}" href="/">Início</a>
     </li>
+    {% if not current_user.is_authenticated: %}
     <li class="nav-item">
       <a class="nav-link {% block log %}{% endblock %}" href="/login">Login</a>
     </li>
     <li class="nav-item">
       <a class="nav-link {% block cad %}{% endblock %}" href="/cadastro">Cadastro</a>
     </li>
+    {% else %}
     <li class="nav-item">
       <a class="nav-link {% block mur %}{% endblock %}" href="/mural">Mural</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Olá, {{session.user_name}}</a> | <a href="/logout">sair</a>
+      <a class="nav-link {% block upl %}{% endblock %}" href="/upload">Upload</a>
     </li>
+    <li class="nav-item">      
+      <a class="nav-link" href="#">Olá, {{session.user_name}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/logout">sair</a>
+    </li>
+    {% endif %}
   </ul>
 
 </nav>

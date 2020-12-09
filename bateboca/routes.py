@@ -4,11 +4,15 @@ import math
 
 from datetime import datetime
 
-from bateboca import db, bcrypt
+from bateboca import db, bcrypt, login_manager
 from bateboca.entidades import Usuario, Postagem
+
+from flask_login import login_user, logout_user, login_required
 
 #usuarios = {'felipebastos': '123456'}
 #discussao = {}
+
+login_manager.login_view = '/login'
 
 @app.route('/')
 def inicio():
@@ -22,7 +26,9 @@ def login():
 def cadastro():
     return render_template('cadastro.html')
     
+
 @app.route('/mural')
+@login_required
 def mural():
     discussao = {}
     postagens = Postagem.query.all()
@@ -31,9 +37,12 @@ def mural():
         discussao[post.dia] = {'nome': quem.nome, 'fala': post.texto}
     return render_template('feed.html', d=discussao)
 
+
 @app.route('/logout')
+@login_required
 def logout():
-    session['user_name'] = 'Visitante'
+    session.clear()
+    logout_user()
     return redirect('/')
 
 
@@ -46,6 +55,7 @@ def logar():
     
     if alguem is not None:
         if bcrypt.check_password_hash(alguem.senha, senha):
+            login_user(alguem)
             session['user_name'] = nome_da_pessoa
             if 'mensagem' in session:
                 del session['mensagem']
@@ -122,6 +132,9 @@ def atualiza(id, nomeNovo):
     
     return redirect('/')
     
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(user_id)
     
 # Exemplo para a Lara
 lojas = {'chico': {'lat': -3.7556750000000002, 'lon': -38.5150646, 'area': 10.0, 'ocupacao': 0}}

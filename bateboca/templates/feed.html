@@ -8,19 +8,15 @@
 {% block conteudo %}
 {{ super() }}
 <div class="container">
-    <div class="row">
-        <form action="/baterboca" method="post">
-            <input type="text" placeholder="desabafe" name="comentario">
-            <input type="submit" value="comentar">
-        </form>
-    </div>
+    <form action="/baterboca" method="post">
+        <input type="text" placeholder="desabafe" name="comentario">
+        <input type="submit" value="comentar">
+    </form>
+</div>
+<div class="container">
     {% for k in d: %}
-        <div class="row">
-            <div class="col">
-                <b>{{ d[k]['nome'] }}</b> disse: {{ d[k]['fala'] }}
-            </div>
-        </div>
-        <hr>
+    <b>{{ d[k]['nome'] }}</b> disse: {{ d[k]['fala'] }}
+    <hr>
     {% endfor %}
 </div>
 {% endblock %}

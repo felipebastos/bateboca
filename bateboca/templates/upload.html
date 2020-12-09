@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Uploads{% endblock %}
+{% block cabecalho %}Uploads do Bate-Boca{% endblock %}
+{% block descricao %}Para fazer uploads de imagens.{% endblock %}
+
+{% block upl %}active{% endblock %}
+
+{% block conteudo %}
+{{ super() }}
+<div class="container">
+    {% if session.mensagem: %}
+        <span class="alert alert-warning">{{session.mensagem}}</span>
+    {% endif %}
+    <form action="/upload/file" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value={{current_user.id}}><br>
+        <input class="form-control" type="file" name="file"><br>
+        <input class="btn btn-primary" type="submit" value="Upload">
+    </form>
+</div>
+{% if imagens: %}
+<div class="container">
+<div class="card-columns">
+{% for img in imagens: %}
+<div class="card">
+    <img class="card-img-top" src="/upload/imagens/{{img}}" alt="img">  
+    <div class="card-body">
+        Um leião e a Cumbuca
+    </div>
+</div>
+
+{% endfor %}
+</div>
+</div>
+{% endif %}
+{% endblock %}
