@@ -7,8 +7,8 @@
         <input type="hidden" value="" name="lon" id="lon">
         <input type="submit" value="Check in">
     </form>
-    Loja da dona Maria:
-    
+    Loja da dona Maria:<br>
+    <a id="linkMapa" href="#" target="_blank">Veja no OpenStreetMap</a>
     
     <script>
         function getLocation() {
@@ -26,12 +26,17 @@
             
             lat.value = position.coords.latitude;
             lon.value = position.coords.longitude;
+            
+            let link = document.getElementById('linkMapa');
+            link.href = `https://www.openstreetmap.org/?mlat=${lat.value}&mlon=${lon.value}#map=18/${lat.value}/${lon.value}`
+            
             console.log(`La: ${lat.value}, Lo: ${lon.value}`)
         }
         window.onload = function(){
             getLocation();
         }
     </script>
+    
     
 </body>
 </html>
