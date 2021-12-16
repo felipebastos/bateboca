@@ -16,7 +16,7 @@ from flask_login import login_required
 bp = Blueprint('upload', __name__, url_prefix='/upload')
 
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -60,5 +60,8 @@ def upload_file():
         quem.profile_img = filename
         db.session.add(quem)
         db.session.commit()
+        return redirect('/upload')
+    else:
+        session['mensagem'] = 'Formato inválido!'
         return redirect('/upload')
     return redirect('/upload')

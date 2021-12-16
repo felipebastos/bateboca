@@ -20,8 +20,10 @@ bcrypt = Bcrypt()
 
 login_manager = LoginManager()
 
+
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
+
     # Nunca torne sua secret_key pública num repositório
     # deixei o default aqui apenas para simplificar
     # demonstraçoes do projeto, já que não é algo
@@ -36,7 +38,7 @@ def create_app():
     # Diretório da instância onde colocaremos os
     # arquivos de upload dos usuários.
     app.config['UPLOAD_FOLDER'] = os.path.join(app.instance_path,'uploads')
-    
+
     # Iniciando as extensões e plugins
     db.init_app(app)
     bcrypt.init_app(app)

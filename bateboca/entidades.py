@@ -8,6 +8,7 @@ class Usuario(db.Model, UserMixin):
     nome = db.Column(db.String(100), unique=True, nullable=False)
     senha = db.Column(db.String(1000), nullable=False)
     profile_img = db.Column(db.String(100), default="")
+    role = db.Column(db.String(10), default="user")
     
     postagens = db.relationship('Postagem', backref='usuario', lazy=True)
     

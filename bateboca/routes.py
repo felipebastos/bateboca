@@ -2,17 +2,26 @@ from flask import current_app as app, render_template, request, redirect, sessio
 
 import math
 
+from functools import wraps
+
 from datetime import datetime
 
 from bateboca import db, bcrypt, login_manager
 from bateboca.entidades import Usuario, Postagem
 
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 #usuarios = {'felipebastos': '123456'}
 #discussao = {}
 
 login_manager.login_view = '/login'
+
+@app.route('/teste_db')
+def teste_db():
+    postagens = Postagem.query.join(Usuario).filter_by(Usuario.id == Postagem.usuario_id).all()
+
+    print(postagens[0])
+    return 'ok'
 
 @app.route('/')
 def inicio():
@@ -44,6 +53,27 @@ def logout():
     session.clear()
     logout_user()
     return redirect('/')
+
+def role(role):
+    def decorator(function):
+        @wraps(function)
+        def wrapper():
+            if current_user.role == role:
+                return function()
+            else:
+                return 'erro', 404
+        return wrapper
+    return decorator
+
+
+@app.route('/segredo')
+@login_required
+@role(role='admin')
+def teste_soh_admin():
+    if current_user.role == 'admin':
+        return 'beleza'
+    else:
+        return 'Você não tem autorização para vir aqui', 403
 
 
 @app.route('/logar', methods=['POST'])
